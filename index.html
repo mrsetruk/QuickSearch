@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div class="container" id="app">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav">
+        <a class="navbar-brand" href="#">partcat.com</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="form-inline mr-auto">
+                <select class="custom-select form-control m-1" id="year-select">
+                    <option selected>Years</option>
+                    <option v-bind="selected.year" v-for="year in data.years">{{year}}</option>
+                </select>
+                <select class="custom-select form-control m-1" id="make-select" >
+                    <option selected >Makes</option>
+                    <option v-for="make in data.makes">{{make}}</option>
+                    <!--<option>Acura</option>-->
+                    <!--<option>Honda</option>-->
+                    <!--<option>BMW</option>-->
+                </select>
+                <select class="custom-select form-control m-1" id="model-select">
+                    <option selected >Models</option>
+                    <option v-for="model in data.models">{{model}}</option>
+                    <!--<option>3</option>-->
+                    <!--<option>250i</option>-->
+                    <!--<option>550Li</option>-->
+                </select>
+                <select class="custom-select form-control m-1" id="product-select">
+                    <option selected >Products</option>
+                    <option v-for="product in data.products">{{product}}</option>
+                    <!--<option>Thermostat</option>-->
+                    <!--<option>Sterring Gear</option>-->
+                </select>
+            </form>
+            <!--<ul class="navbar-nav mr-auto">-->
+            <!--<li class="nav-item active">-->
+
+            <!--</li>-->
+
+            <!--<li class="nav-item dropdown">-->
+            <!--<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+            <!--Dropdown-->
+            <!--</a>-->
+            <!--<div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+            <!--<a class="dropdown-item" href="#">Action</a>-->
+            <!--<a class="dropdown-item" href="#">Another action</a>-->
+            <!--<div class="dropdown-divider"></div>-->
+            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+            <!--</div>-->
+            <!--</li>-->
+            <!--</ul>-->
+
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container" id="content">
+
+    </div>
+</div>
+<script>
+
+    var scope = {
+        data : {
+            years: [2017,2016,2015,2014],
+            makes: [],
+            models: [],
+            products: []
+        },
+        selected : {
+            year : null,
+            make : null,
+            model : null,
+            product: null
+        }
+    };
+
+    var app = new Vue({
+        el: '#app',
+        data: scope,
+        methods: {
+            getYear: _.debounce(
+                function () {
+                    var vm = this;
+                    axios.get('https://yesno.wtf/api')
+                        .then(function (response) {
+                            vm.data.years = response.data
+                        })
+                        .catch(function (error) {
+
+                        })
+                },
+                // This is the number of milliseconds we wait for the
+                // user to stop typing.
+                500
+            )
+        }
+    })
+</script>
+</body>
+</html>
