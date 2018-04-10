@@ -78,7 +78,7 @@
 
     var scope = {
         data : {
-            years: [2017,2016,2015,2014],
+            years: [],
             makes: [],
             models: [],
             products: [],
@@ -93,22 +93,30 @@
     var app = new Vue({
         el: '#app',
         data: scope,
-        created: function () {
-            console.log(this.data)
+        mounted: function () {
+            axios.get('http://test.partcat.local/api/application/delphi/')
+                .then(function (response) {
+                    vm.data.years = response.data;
+                    console.log(response.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
         },
         methods: {
-            getYear: _.debounce(
+            getMakes: _.debounce(
                 function () {
                     var vm = this;
-                    axios.get('https://yesno.wtf/api')
+                    axios.get('http://test.partcat.local/api/application/delphi/')
                         .then(function (response) {
-                            vm.data.years = response.data
+                            vm.data.years = response.data;
+                            console.log(response.data)
                         })
                         .catch(function (error) {
-
+                            console.log(error);
                         })
                 },
-                500
+                100
             )
         }
     })
