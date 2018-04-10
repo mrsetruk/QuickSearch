@@ -8,6 +8,8 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/lodash.js"></script>
 </head>
 <body>
 <div class="container" id="app">
@@ -21,7 +23,7 @@
             <form class="form-inline mr-auto">
                 <select class="custom-select form-control m-1" id="year-select">
                     <option selected>Years</option>
-                    <option v-bind="selected.year" v-for="year in data.years">{{year}}</option>
+                    <option v-for="year in data.years">{{year}}</option>
                 </select>
                 <select class="custom-select form-control m-1" id="make-select" >
                     <option selected >Makes</option>
@@ -79,19 +81,21 @@
             years: [2017,2016,2015,2014],
             makes: [],
             models: [],
-            products: []
-        },
-        selected : {
-            year : null,
-            make : null,
-            model : null,
-            product: null
+            products: [],
+            selectedYear : '',
+            selectedMake : '',
+            selectedModel : '',
+            selectedProduct : '',
+            error : ''
         }
     };
 
     var app = new Vue({
         el: '#app',
         data: scope,
+        created: function () {
+            console.log(this.data)
+        },
         methods: {
             getYear: _.debounce(
                 function () {
@@ -104,8 +108,6 @@
 
                         })
                 },
-                // This is the number of milliseconds we wait for the
-                // user to stop typing.
                 500
             )
         }
